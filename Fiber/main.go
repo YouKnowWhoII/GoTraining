@@ -10,6 +10,11 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
+//func resetDatabase(db *gorm.DB) {
+//	db.DropTableIfExists(&patient.Patient{}, &doctor.Doctor{}, &appointment.Appointment{}, &medicalrecord.MedicalRecord{})
+//	db.AutoMigrate(&patient.Patient{}, &doctor.Doctor{}, &appointment.Appointment{}, &medicalrecord.MedicalRecord{})
+//}
+
 var db *gorm.DB
 
 func init() {
@@ -28,33 +33,12 @@ func init() {
 func main() {
 	app := fiber.New()
 
-	// Patient routes
-	app.Post("/patients", patient.CreatePatient)
-	app.Get("/patients", patient.GetPatients)
-	app.Get("/patients/:id", patient.GetPatient)
-	app.Put("/patients/:id", patient.UpdatePatient)
-	app.Delete("/patients/:id", patient.DeletePatient)
+	//resetDatabase(db)
 
-	// Doctor routes
-	app.Post("/doctors", doctor.CreateDoctor)
-	app.Get("/doctors", doctor.GetDoctors)
-	app.Get("/doctors/:id", doctor.GetDoctor)
-	app.Put("/doctors/:id", doctor.UpdateDoctor)
-	app.Delete("/doctors/:id", doctor.DeleteDoctor)
-
-	// Appointment routes
-	app.Post("/appointments", appointment.CreateAppointment)
-	app.Get("/appointments", appointment.GetAppointments)
-	app.Get("/appointments/:id", appointment.GetAppointment)
-	app.Put("/appointments/:id", appointment.UpdateAppointment)
-	app.Delete("/appointments/:id", appointment.DeleteAppointment)
-
-	// MedicalRecord routes
-	app.Post("/medicalrecords", medicalrecord.CreateMedicalRecord)
-	app.Get("/medicalrecords", medicalrecord.GetMedicalRecords)
-	app.Get("/medicalrecords/:id", medicalrecord.GetMedicalRecord)
-	app.Put("/medicalrecords/:id", medicalrecord.UpdateMedicalRecord)
-	app.Delete("/medicalrecords/:id", medicalrecord.DeleteMedicalRecord)
+	patient.RegisterRoutes(app)
+	doctor.RegisterRoutes(app)
+	appointment.RegisterRoutes(app)
+	medicalrecord.RegisterRoutes(app)
 
 	app.Listen(":3000")
 }

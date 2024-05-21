@@ -7,15 +7,6 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type MedicalRecord struct {
-	gorm.Model
-	PatientID uint
-	Patient   patient.Patient `gorm:"foreignKey:PatientID"`
-	DoctorID  uint
-	Doctor    doctor.Doctor `gorm:"foreignKey:DoctorID"`
-	Record    string        `json:"record"`
-}
-
 var db *gorm.DB
 
 func SetDB(database *gorm.DB) {
