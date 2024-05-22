@@ -7,8 +7,11 @@ import (
 )
 
 func playGuessingGame() {
+	// Create a new random source with the current time as the seed
+	// Ensures that the random number generated is different each time the program is run
 	s := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(s)
+	// +1 shifts the range from [0, 99] to [1, 100]
 	randomNumber := r.Intn(100) + 1
 	var guess int
 

@@ -10,11 +10,11 @@ func greetUser() {
 	var name string
 	fmt.Print("Enter your name: ")
 	fmt.Scanln(&name)
-
 	fmt.Printf("Hello, %s!\n", name)
 }
 
 func main() {
+	greetUser()
 	var choice int
 	fmt.Println("Enter your choice:")
 	fmt.Scan(&choice)
