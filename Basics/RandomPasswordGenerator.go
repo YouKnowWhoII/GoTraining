@@ -11,7 +11,9 @@ func generateRandomPassword() {
 	fmt.Print("Enter the desired password length: ")
 	fmt.Scanln(&length)
 
-	rand.Seed(time.Now().UnixNano())
+	s := rand.NewSource(time.Now().UnixNano())
+	r := rand.New(s)
+
 	chars := []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
 		"abcdefghijklmnopqrstuvwxyz" +
 		"0123456789" +
@@ -19,7 +21,7 @@ func generateRandomPassword() {
 
 	var password string
 	for i := 0; i < length; i++ {
-		password += string(chars[rand.Intn(len(chars))])
+		password += string(chars[r.Intn(len(chars))])
 	}
 
 	fmt.Println("Your random password is:", password)

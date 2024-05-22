@@ -6,11 +6,19 @@ import (
 )
 
 func serveHomePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "<h1>Welcome to my website!</h1>")
+	serve, err := fmt.Fprint(w, "<h1>Welcome to my website!</h1>")
+	if err != nil {
+		fmt.Println("Error serving home page:", err)
+	} else {
+		fmt.Println("Served home page successfully:", serve)
+	}
 }
 
 func startWebServer() {
 	http.HandleFunc("/", serveHomePage)
 	fmt.Println("Starting server on port 8080...")
-	http.ListenAndServe(":8080", nil)
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		fmt.Println("Error starting server:", err)
+	}
 }
