@@ -7,7 +7,7 @@ import (
 )
 
 func processFile() {
-	file, err := os.Open("test.txt")
+	file, err := os.Open("Basics/test.txt")
 	if err != nil {
 		fmt.Println("Error opening file: ", err)
 		return
@@ -26,7 +26,7 @@ func processFile() {
 		return
 	}
 
-	output, err := os.Create("output.txt")
+	output, err := os.Create("Basics/output.txt")
 	if err != nil {
 		fmt.Println("Error creating file: ", err)
 		return
