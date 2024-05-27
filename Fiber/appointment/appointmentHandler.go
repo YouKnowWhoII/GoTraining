@@ -22,14 +22,14 @@ func CreateAppointment(c *fiber.Ctx) error {
 
 func GetAppointments(c *fiber.Ctx) error {
 	var appointments []Appointment
-	db.Find(&appointments)
+	db.Preload("Patient").Preload("Doctor").Find(&appointments)
 	return c.JSON(appointments)
 }
 
 func GetAppointment(c *fiber.Ctx) error {
 	id := c.Params("id")
 	var appointment Appointment
-	db.Find(&appointment, id)
+	db.Preload("Patient").Preload("Doctor").Find(&appointment, id)
 	return c.JSON(appointment)
 }
 

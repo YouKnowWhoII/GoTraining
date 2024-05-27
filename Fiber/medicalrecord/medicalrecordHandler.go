@@ -43,14 +43,14 @@ func CreateMedicalRecord(c *fiber.Ctx) error {
 
 func GetMedicalRecords(c *fiber.Ctx) error {
 	var medicalRecords []MedicalRecord
-	db.Find(&medicalRecords)
+	db.Preload("Patient").Preload("Doctor").Find(&medicalRecords)
 	return c.JSON(medicalRecords)
 }
 
 func GetMedicalRecord(c *fiber.Ctx) error {
 	id := c.Params("id")
 	var medicalRecord MedicalRecord
-	db.Find(&medicalRecord, id)
+	db.Preload("Patient").Preload("Doctor").Find(&medicalRecord, id)
 	return c.JSON(medicalRecord)
 }
 
