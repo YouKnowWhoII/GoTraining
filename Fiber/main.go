@@ -1,10 +1,9 @@
 package main
 
 import (
-	"GO/Fiber/appointment"
-	"GO/Fiber/doctor"
-	"GO/Fiber/medicalrecord"
-	"GO/Fiber/patient"
+	"GO/Fiber/handlers"
+	"GO/Fiber/models"
+	"GO/Fiber/routes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
@@ -23,11 +22,11 @@ func init() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.AutoMigrate(&patient.Patient{}, &doctor.Doctor{}, &appointment.Appointment{}, &medicalrecord.MedicalRecord{})
-	patient.SetDB(db)
-	doctor.SetDB(db)
-	appointment.SetDB(db)
-	medicalrecord.SetDB(db)
+	db.AutoMigrate(&models.Patient{}, &models.Doctor{}, &models.Appointment{}, &models.MedicalRecord{})
+	handlers.SetPatientDB(db)
+	handlers.SetDoctorDB(db)
+	handlers.SetMedicalRecordDB(db)
+	handlers.SetAppointmentDB(db)
 }
 
 func main() {
@@ -35,10 +34,10 @@ func main() {
 
 	//resetDatabase(db)
 
-	patient.RegisterRoutes(app)
-	doctor.RegisterRoutes(app)
-	appointment.RegisterRoutes(app)
-	medicalrecord.RegisterRoutes(app)
+	routes.RegisterPatientRoutes(app)
+	routes.RegisterDoctorRoutes(app)
+	routes.RegisterMedicalRecordRoutes(app)
+	routes.RegisterAppointmentRoutes(app)
 
 	app.Listen(":3000")
 }
