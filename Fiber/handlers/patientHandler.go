@@ -1,18 +1,19 @@
-package patient
+package handlers
 
 import (
+	"GO/Fiber/models"
 	"github.com/gofiber/fiber/v2"
 	"github.com/jinzhu/gorm"
 )
 
 var db *gorm.DB
 
-func SetDB(database *gorm.DB) {
+func SetPatientDB(database *gorm.DB) {
 	db = database
 }
 
 func CreatePatient(c *fiber.Ctx) error {
-	patient := new(Patient)
+	patient := new(models.Patient)
 	if err := c.BodyParser(patient); err != nil {
 		return c.Status(400).SendString(err.Error())
 	}
@@ -21,26 +22,26 @@ func CreatePatient(c *fiber.Ctx) error {
 }
 
 func GetPatients(c *fiber.Ctx) error {
-	var patients []Patient
+	var patients []models.Patient
 	db.Find(&patients)
 	return c.JSON(patients)
 }
 
 func GetPatient(c *fiber.Ctx) error {
 	id := c.Params("id")
-	var patient Patient
+	var patient models.Patient
 	db.Find(&patient, id)
 	return c.JSON(patient)
 }
 
 func UpdatePatient(c *fiber.Ctx) error {
 	id := c.Params("id")
-	var patient Patient
+	var patient models.Patient
 	db.First(&patient, id)
 	if patient.ID == 0 {
 		return c.Status(404).SendString("No Patient Found with ID")
 	}
-	updatedPatient := new(Patient)
+	updatedPatient := new(models.Patient)
 	if err := c.BodyParser(updatedPatient); err != nil {
 		return c.Status(400).SendString(err.Error())
 	}
@@ -50,7 +51,7 @@ func UpdatePatient(c *fiber.Ctx) error {
 
 func DeletePatient(c *fiber.Ctx) error {
 	id := c.Params("id")
-	var patient Patient
+	var patient models.Patient
 	db.First(&patient, id)
 	if patient.ID == 0 {
 		return c.Status(404).SendString("No Patient Found with ID")
