@@ -1,0 +1,3 @@
+Patient: Nadul Jayasundera
+Doctor: Dr. Jameson
+Record: Patient is dead

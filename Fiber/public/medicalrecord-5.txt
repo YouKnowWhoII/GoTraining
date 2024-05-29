@@ -1,0 +1,3 @@
+Patient: John Doe
+Doctor: Dr. Smith
+Record: Patient is in good health.

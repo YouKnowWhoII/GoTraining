@@ -2,8 +2,11 @@ package handlers
 
 import (
 	"GO/Fiber/models"
+	"bufio"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/jinzhu/gorm"
+	"os"
 )
 
 func SetMedicalRecordDB(database *gorm.DB) {
@@ -49,6 +52,38 @@ func GetMedicalRecord(c *fiber.Ctx) error {
 	var medicalRecord models.MedicalRecord
 	db.Preload("Patient").Preload("Doctor").Find(&medicalRecord, id)
 	return c.JSON(medicalRecord)
+}
+
+// function to generate and return a text file with a medical record by id, store in public directory
+func GetMedicalRecordFile(c *fiber.Ctx) error {
+	id := c.Params("id")
+	var medicalRecord models.MedicalRecord
+	db.Preload("Patient").Preload("Doctor").Find(&medicalRecord, id)
+	fileName := fmt.Sprintf("Fiber/public/medicalrecord-%d.txt", medicalRecord.ID)
+	content := fmt.Sprintf("Patient: %s\nDoctor: %s\nRecord: %s", medicalRecord.Patient.Name, medicalRecord.Doctor.Name, medicalRecord.Record)
+	//err := os.WriteFile(file, []byte(content), 0644)
+
+	file, err := os.Create(fileName)
+	if err != nil {
+		println(err.Error())
+		return c.Status(500).SendString(err.Error())
+	}
+	defer file.Close()
+
+	writer := bufio.NewWriter(file)
+	_, err = writer.WriteString(content)
+	if err != nil {
+		println(err.Error())
+		return c.Status(500).SendString(err.Error())
+	}
+
+	err = writer.Flush()
+	if err != nil {
+		println(err.Error())
+		return c.Status(500).SendString(err.Error())
+	}
+
+	return c.Download(fileName)
 }
 
 func UpdateMedicalRecord(c *fiber.Ctx) error {
