@@ -32,12 +32,15 @@ func init() {
 func main() {
 	app := fiber.New()
 
+	app.Static("/", "./public")
+
 	//resetDatabase(db)
 
 	routes.RegisterPatientRoutes(app)
 	routes.RegisterDoctorRoutes(app)
 	routes.RegisterMedicalRecordRoutes(app)
 	routes.RegisterAppointmentRoutes(app)
+	routes.RegisterDownloadRoutes(app)
 
 	app.Listen(":3000")
 }
