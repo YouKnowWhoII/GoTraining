@@ -22,17 +22,22 @@ func init() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	db.AutoMigrate(&models.Patient{}, &models.Doctor{}, &models.Appointment{}, &models.MedicalRecord{})
+	db.AutoMigrate(&models.Patient{}, &models.Doctor{}, &models.Appointment{}, &models.MedicalRecord{}, &models.User{})
 	handlers.SetPatientDB(db)
 	handlers.SetDoctorDB(db)
 	handlers.SetMedicalRecordDB(db)
 	handlers.SetAppointmentDB(db)
+	handlers.SetAuthDB(db)
 }
 
 func main() {
 	app := fiber.New()
 
 	app.Static("/", "./public")
+
+	//app.Use(cors.New(cors.Config{
+	//	AllowCredentials: true,
+	//}))
 
 	//resetDatabase(db)
 
@@ -41,6 +46,7 @@ func main() {
 	routes.RegisterMedicalRecordRoutes(app)
 	routes.RegisterAppointmentRoutes(app)
 	routes.RegisterDownloadRoutes(app)
+	routes.RegisterAuthRoutes(app)
 
 	app.Listen(":3000")
 }
