@@ -1,0 +1,10 @@
+{{define "sales"}}
+{{template "header" .}}
+Monthly Sales Report for {{.ReportDate | formatDate}}
+--------------------------------------------------------
+{{range .Sales}}
+ Date: {{.Date | formatDate}}, Amount: ${{.Amount | printf "%.2f"}}
+{{end}}
+Total Sales: ${{.Sales | totalSales | printf "%.2f"}}
+{{template "footer" .}}
+{{end}}

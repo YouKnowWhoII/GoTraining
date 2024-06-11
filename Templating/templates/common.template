@@ -1,0 +1,9 @@
+{{define "header"}}
+Evolza - Monthly Report
+================================
+{{end}}
+
+{{define "footer"}}
+--------------------------------
+Generated on {{.ReportDate | formatDate}}
+{{end}}

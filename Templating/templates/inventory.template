@@ -1,0 +1,10 @@
+{{define "inventory"}}
+{{template "header" .}}
+Product Inventory Report for {{.ReportDate | formatDate}}
+-----------------------------------------------------------------
+{{range .Products}}
+ Name: {{.Name}}, Quantity: {{.Quantity}}, Price: ${{.Price | printf "%.2f"}}
+{{end}}
+Total Inventory Value: ${{.Products | totalInventoryValue | printf "%.2f"}}
+{{template "footer" .}}
+{{end}}
